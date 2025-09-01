@@ -1,0 +1,43 @@
+SQL Code flow 
+-------------
+
+retailer_events_raw -> retailer_events_cleaned (purchase price cleaning using python code)
+
+retailer_events_cleaned -> retailer_events_silver (all the data cleaning and transformations using sql code)
+
+
+retailer_events_silver -> retailer_events_hc (subset of data for household cleaning using sql code)
+
+retailer_events_hc -> (added brand column using brand_ctas script)
+
+retailer_events_hc -> (added search result product name and search result brand name columns using sql script) 
+
+Data Engieering (2 slides)
+1. Data Cleaning
+2. Data Transformations
+=======================
+
+1. Data Cleaning
+---------
+1. Purchase Price  
+Original Vlaues                                Cleaned Values 
+\[\"\"1\"\",\"\"203.59\"\"]\""                  203.59
+\[\"\"2\"\",\"\"150\"\",\"\"174.99\"\"]\""      162.5
+
+2. Product Name 
+Scott Multifold Paper Towels (01804), with Absorbency Pockets™, 9.2\\" x 9.4\"\" sheets, White (250 Sheets/Pack, 16 Packs/Case, 4,000 Sheets/Case)"
+
+2. Data Transformations
+------------
+1. Filter the data 
+- Pick only sessions which has at least one household cleaning item
+- Rows redcued from 24 million to 4.5 million
+
+2. Get the search results in same row 
+- For event type search, product name was 'nan'
+
+3. Create Sessions
+- For each customer created a session window of 15 mins 
+
+4. Date Dimension 
+- Loaded the Date Dimension table and joined with retailer events
